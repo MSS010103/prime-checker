@@ -58,6 +58,3 @@ POST `/api/check-prime`
 - npm (Node Package Manager)
 
 
-
-.then(data => console.log(data));
-``` # prime-checker
