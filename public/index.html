@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prime Number Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #f5f5f5;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="number"] {
+            padding: 8px;
+            font-size: 16px;
+            width: 200px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 18px;
+        }
+        .error { color: #ff0000; }
+        .success { color: #008000; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Prime Number Checker</h1>
+        <div>
+            <input type="number" id="numberInput" placeholder="Enter a number">
+            <br>
+            <button onclick="checkPrime()">Check Prime</button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function checkPrime() {
+            const number = document.getElementById('numberInput').value;
+            const resultDiv = document.getElementById('result');
+            
+            if (!number) {
+                resultDiv.innerHTML = '<span class="error">Please enter a number</span>';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/check-prime', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ number: parseInt(number) })
+                });
+
+                const data = await response.json();
+                
+                if (response.ok) {
+                    resultDiv.innerHTML = '<span class="success">' + 
+                        number + (data.isPrime ? ' is' : ' is not') + 
+                        ' a prime number</span>';
+                } else {
+                    resultDiv.innerHTML = '<span class="error">' + data.error + '</span>';
+                }
+            } catch (error) {
+                resultDiv.innerHTML = '<span class="error">Error checking number</span>';
+            }
+        }
+
+        // Allow Enter key to trigger the check
+        document.getElementById('numberInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPrime();
+            }
+        });
+    </script>
+</body>
+</html> 
