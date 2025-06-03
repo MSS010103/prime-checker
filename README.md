@@ -59,25 +59,5 @@ POST `/api/check-prime`
 
 
 
-
-
-
-Using curl:
-```bash
-curl -X POST -H "Content-Type: application/json" -d '{"number": 17}' http://localhost:3000/api/check-prime
-```
-
-Using JavaScript/Fetch:
-```javascript
-fetch('http://localhost:3000/api/check-prime', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    number: 17
-  }),
-})
-.then(response => response.json())
 .then(data => console.log(data));
 ``` # prime-checker
